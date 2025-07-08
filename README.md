@@ -2,51 +2,53 @@
 
 ## Product Card UI Demo
 
-This project includes a modern, responsive Product Card component that displays product image, name, price, variant options, and an Add to Cart button. If a product is out of stock, the button is disabled or replaced with an "Out of Stock" label.
+This project features a modern, responsive Product Card component designed for scalable e-commerce applications. Each card presents a product image, name, price, variant selector, and an Add to Cart button, with clear feedback for out-of-stock items.
 
-**Layout Approach:**
-The Product Card UI uses a CSS grid layout for the product listing, ensuring all cards are evenly spaced and aligned. Each card features a fixed-height image area, clean typography, and a clear call-to-action, following modern e-commerce design best practices.
+**Layout & UI/UX:**
+- Product cards are arranged in a CSS grid, ensuring consistent alignment and spacing across all viewports.
+- Each card maintains a fixed image area, clean typography, and a prominent call-to-action, adhering to contemporary e-commerce design standards.
 
 **Responsiveness:**
-The layout adapts seamlessly to all screen sizes using CSS grid and media queries. Product cards and images resize appropriately for mobile, tablet, and desktop, maintaining usability and visual appeal across devices.
+- The interface is fully responsive, leveraging CSS grid and media queries to deliver an optimal experience on mobile, tablet, and desktop devices.
+- Product cards and images scale fluidly, preserving usability and visual hierarchy at any screen size.
+
+**Professional React Engineering:**
+- The `ProductCard` component is modular, maintainable, and optimized for performance using `useMemo` to minimize unnecessary re-renders.
+- PropTypes enforce type safety and serve as in-code documentation for component contracts.
+- UI subcomponents (e.g., the wishlist button) are extracted for clarity, reusability, and separation of concerns.
+- Event handlers and business logic are clearly named and encapsulated, supporting easy extension and debugging.
 
 **Demo Link:**
 - [View Live Demo](#) <!-- Replace with Netlify or GitHub Pages link after deployment -->
 
 ---
 
-## Run Locally
+## Deployment
 
-Clone the project
-
-```bash
-  git clone https://ecommerce-assignment-admin@bitbucket.org/ecommerce-assignment/ecommerce.git
-```
-
-Go to the project directory
+To deploy this project, you can use platforms like Netlify, Vercel, or GitHub Pages. Simply connect your repository and follow the platform’s deployment instructions. For a local production build:
 
 ```bash
-  cd ecommerce
+npm run build
 ```
 
-Install dependencies
+## Usage
 
-```bash
-  npm install
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+4. Visit `http://localhost:3000` to view the app.
 
-  or 
+## Contribution
 
-  npm install react-material-ui-carousel --save --legacy-peer-deps
-```
+Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request. For major changes, open an issue first to discuss your ideas.
 
-Start the server
-
-```bash
-  npm start
-```
-
-The server should now be running. You can access the application by opening a web browser and entering the following URL:
-
-```bash
-  http://localhost:3000
-```
+---

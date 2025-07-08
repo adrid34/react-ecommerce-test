@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
 import "./Products.css";
 
@@ -114,20 +114,83 @@ const testProducts = [
   },
 ];
 
-const handleAddToCart = (product, variant) => {
-  alert(`Added ${product.name} (${variant}) to cart!`);
-};
+const sortOptions = [
+  { value: "default", label: "Default" },
+  { value: "priceLowHigh", label: "Price: Low to High" },
+  { value: "priceHighLow", label: "Price: High to Low" },
+];
+
+const ProductsControls = ({ sort, setSort, inStockOnly, setInStockOnly, minRating, setMinRating, sortOptions }) => (
+  <div className="products-controls">
+    <label>
+      Sort by:
+      <select value={sort} onChange={e => setSort(e.target.value)}>
+        {sortOptions.map(opt => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+    </label>
+    <label>
+      <input
+        type="checkbox"
+        checked={inStockOnly}
+        onChange={e => setInStockOnly(e.target.checked)}
+      />
+      In Stock Only
+    </label>
+    <label>
+      Min Rating:
+      <select value={minRating} onChange={e => setMinRating(Number(e.target.value))}>
+        <option value={0}>All</option>
+        <option value={3.5}>3.5+</option>
+        <option value={4.0}>4.0+</option>
+        <option value={4.5}>4.5+</option>
+      </select>
+    </label>
+  </div>
+);
 
 const Products = () => {
+  const [sort, setSort] = useState("default");
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [minRating, setMinRating] = useState(0);
+
+  const handleAddToCart = useCallback((product, variant) => {
+    alert(`Added ${product.name} (${variant}) to cart!`);
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    let filtered = testProducts.filter(
+      (p) => (!inStockOnly || p.inStock) && p.rating >= minRating
+    );
+    if (sort === "priceLowHigh") {
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
+    } else if (sort === "priceHighLow") {
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
+    }
+    return filtered;
+  }, [sort, inStockOnly, minRating]);
+
   return (
-    <div className="products-grid">
-      {testProducts.map(product => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-        />
-      ))}
+    <div>
+      <ProductsControls
+        sort={sort}
+        setSort={setSort}
+        inStockOnly={inStockOnly}
+        setInStockOnly={setInStockOnly}
+        minRating={minRating}
+        setMinRating={setMinRating}
+        sortOptions={sortOptions}
+      />
+      <div className="products-grid">
+        {filteredProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={handleAddToCart}
+          />
+        ))}
+      </div>
     </div>
   );
 };
