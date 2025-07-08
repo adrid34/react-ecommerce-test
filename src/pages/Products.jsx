@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import "./Products.css";
 
@@ -120,8 +120,28 @@ const sortOptions = [
   { value: "priceHighLow", label: "Price: High to Low" },
 ];
 
-const ProductsControls = ({ sort, setSort, inStockOnly, setInStockOnly, minRating, setMinRating, sortOptions }) => (
+const ProductsControls = ({ 
+  sort, 
+  setSort, 
+  inStockOnly, 
+  setInStockOnly, 
+  minRating, 
+  setMinRating, 
+  searchTerm,
+  setSearchTerm,
+  sortOptions 
+}) => (
   <div className="products-controls">
+    <label>
+      Search:
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+        placeholder="Search products..."
+        className="search-input"
+      />
+    </label>
     <label>
       Sort by:
       <select value={sort} onChange={e => setSort(e.target.value)}>
@@ -154,6 +174,17 @@ const Products = () => {
   const [sort, setSort] = useState("default");
   const [inStockOnly, setInStockOnly] = useState(false);
   const [minRating, setMinRating] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const handleAddToCart = useCallback((product, variant) => {
     alert(`Added ${product.name} (${variant}) to cart!`);
@@ -161,7 +192,10 @@ const Products = () => {
 
   const filteredProducts = useMemo(() => {
     let filtered = testProducts.filter(
-      (p) => (!inStockOnly || p.inStock) && p.rating >= minRating
+      (p) => 
+        (!inStockOnly || p.inStock) && 
+        p.rating >= minRating &&
+        p.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
     if (sort === "priceLowHigh") {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
@@ -169,7 +203,7 @@ const Products = () => {
       filtered = [...filtered].sort((a, b) => b.price - a.price);
     }
     return filtered;
-  }, [sort, inStockOnly, minRating]);
+  }, [sort, inStockOnly, minRating, debouncedSearchTerm]);
 
   return (
     <div>
@@ -180,6 +214,8 @@ const Products = () => {
         setInStockOnly={setInStockOnly}
         minRating={minRating}
         setMinRating={setMinRating}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
         sortOptions={sortOptions}
       />
       <div className="products-grid">
