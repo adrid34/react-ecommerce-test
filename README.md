@@ -26,7 +26,7 @@ This project features a modern, responsive Product Card component designed for s
 - **Product Ratings**: Star-based rating display with half-star support
 
 **Demo Link:**
-- [View Live Demo]([#](https://react-ecommerce-test-two.vercel.app/product)) 
+- [View Live Demo](https://react-ecommerce-test-two.vercel.app/product) 
 
 ---
 
