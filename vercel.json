@@ -1,7 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "ignore": [
-    "api/**/*"
-  ]
+  "outputDirectory": "build"
 } 
